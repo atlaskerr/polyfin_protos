@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package officepb:
+
+service OfficeService {
+
+	rpc GetAllOffices(GetAllOfficesReq) returns (GetAllOfficesResp) {};
+
+	rpc AddOffice(AddOfficeReq) returns (AddOfficeResp) {};
+
+	rpc UpdateOfficeName(UpdateOfficeNameReq) returns (UpdateOfficeNameResp) {};
+	rpc UpdateOfficeType(UpdateOfficeTypeReq) returns (UpdateOfficeTypeResp) {};
+	rpc DeleteOffice(DeleteOfficeReq) returns (DeleteOfficeResp) {};
+	rpc AddIncumbent(AddIncumbentReq) returns (AddIncumbentResp) {};
+}
+
+enum OfficeType {
+	NON_JUDICIAL = 0;
+	JUDICIAL = 1;
+}
+
+message Office {
+	string id = 1;
+	string name = 2;
+	string authority_id = 3;
+	OfficeType type = 4;
+	// incumbent_id is the ID of the filer who
+	// currently holds the office position.
+	string incumbent_id = 5;
+}
+
+message GetAllOfficesReq {}
+
+message GetAllOfficesResp {
+	repeated Office office = 1;
+}
+
+message AddOfficeReq {
+	Office office = 1;
+}
+
+message AddOfficeResp {
+	Office office = 1;
+}
+	

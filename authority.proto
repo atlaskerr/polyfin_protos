@@ -1,0 +1,96 @@
+syntax = "proto3"
+
+package authoritypb;
+
+
+enum Type {
+	STATE = 0;
+	CITY = 1;
+	COUNTY = 2;
+	SCHOOL_DISTRICT = 3;
+	OTHER = 4;
+}
+
+message Authority {
+	string id = 1;
+	string title = 2;
+	Address address = 3;
+	string phone = 4;
+	Type type = 5;
+	// admin_id is the user id of the individual(s)
+	// in charge of managing the filing authority
+	repeated admin_id = 6;
+}
+
+message Address {
+	string street = 1;
+	string suite = 2;
+	string city = 3;
+	string state = 4;
+	string zip = 5;
+}
+
+// GetAllAuthoritiesReq is a request to fetch all Filing Authorities
+message GetAllAuthoritiesReq {}
+
+// GetAllAuthoritiesResp returns a list of Filing Authorities
+message GetAllAuthoritiesResp {
+	repeated Authority authority = 1;
+}
+
+message AddAuthorityReq {
+	Authority authority = 1;
+}
+
+message AddAuthorityResp {
+	Authority authority = 1;
+}
+
+message DeleteAuthorityReq {
+	string authority_id = 1;
+}
+
+message DeleteAuthorityResp {}
+
+message GetAuthorityReq {
+	string id = 1;
+}
+
+message GetAuthorityResp {
+	Authority authority = 1;
+}
+
+service AuthorityService {
+
+	// GetAllAuthorities returns a list of all Filing Authorities.
+	rpc GetAllAuthorities(ListAllAuthoritiesReq) returns (ListAllAuthoritiesResp) {};
+
+	// AddAuthority creates a new Filing Authority
+	rpc AddAuthority(AddAuthorityReq) returns (AddAuthorityResp) {};
+
+	// DeleteAuthority deletes a filing authority from the database
+	rpc DeleteAuthority(DeleteAuthorityReq) returns (DeleteAuthorityResp) {};
+
+	// GetAuthority returns information about a specific Filing Authority
+	rpc GetAuthority(GetAuthorityReq) returns (GetAuthorityResp) {};
+
+	// AddAuthorityAdmin adds a user as an admin to a Filing Authority
+	rpc AddAuthorityAdmin(AddAuthorityAdminReq) returns (AddAuthorityAdminResp) {};
+
+	// DeleteAuthorityAdmin removes an admin user from a Filing Authority 
+	rpc DeleteAuthorityAdmin(RemoveAuthorityAdminReq) returns (RemoveAuthorityAdminResp) {};
+
+	// UpdateAuthorityTitle updates the display name of a Filing Authority
+	rpc UpdateAuthorityTitle(UpdateAuthorityTitleReq) returns (UpdateAuthorityTitleResp) {};
+
+	// UpdateAuthorityAddress changes the address of a Filing Authority
+	rpc UpdateAuthorityAddress(UpdateAuthorityAddressReq) returns (UpdateAuthorityAddressResp) {};
+
+	// UpdateAuthorityPhone changes the contact phone number of a Filing Authority
+	rpc UpdateAuthorityPhone(UpdateAuthorityPhoneReq) returns (UpdateAuthorityPhoneResp) {};
+
+	// UpdateAuthorityType changes the authority type of a Filing Authority. This call shouldn't
+	// be used very often but useful if a mistake was made when creating the initial Filing Authority
+	rpc UpdateAuthorityType(UpdateAuthorityTypeReq) returns (UpdateAuthorityTypeResp) {};
+}
+

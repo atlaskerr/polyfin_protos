@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package electionpb;
+
+service ElectionService {
+	rpc GetAllElections(GetAllElectionsReq) returns (GetAllElectionsResp) {};
+	rpc CreateElection(CreateElectionReq) returns (CreateElectionResp) {};
+	
+}
+
+message Election {
+	string election_id = 1;
+	string authority_id = 2;
+	Timestamp date = 3;	
+	repeated office_id = 4;
+	repeated measure_id = 5;
+}
