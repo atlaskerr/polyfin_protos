@@ -2,7 +2,6 @@ syntax = "proto3"
 
 package authoritypb;
 
-
 enum Type {
 	STATE = 0;
 	CITY = 1;
@@ -11,15 +10,22 @@ enum Type {
 	OTHER = 4;
 }
 
+
 message Authority {
 	string id = 1;
 	string title = 2;
 	Address address = 3;
 	string phone = 4;
 	Type type = 5;
+
+	// contibution limits are measured in cents
+	// ex. 10000 = $100.00
+	int64 non_judicial_contibution_limit = 6;
+	int64 judicial_contibution_limit = 7;
+
 	// admin_id is the user id of the individual(s)
 	// in charge of managing the filing authority
-	repeated admin_id = 6;
+	repeated admin_id = 8;
 }
 
 message Address {
@@ -30,67 +36,145 @@ message Address {
 	string zip = 5;
 }
 
-// GetAllAuthoritiesReq is a request to fetch all Filing Authorities
-message GetAllAuthoritiesReq {}
+// GetAllReq is a request to fetch all Filing Authorities
+message GetAllReq {}
 
-// GetAllAuthoritiesResp returns a list of Filing Authorities
-message GetAllAuthoritiesResp {
+// GetAllResp returns a list of Filing Authorities
+message GetAllResp {
 	repeated Authority authority = 1;
 }
 
-message AddAuthorityReq {
+message AddReq {
 	Authority authority = 1;
 }
 
-message AddAuthorityResp {
+message AddResp {
 	Authority authority = 1;
 }
 
-message DeleteAuthorityReq {
+message DeleteReq {
 	string authority_id = 1;
 }
 
-message DeleteAuthorityResp {}
+message DeleteResp {}
 
-message GetAuthorityReq {
-	string id = 1;
+message GetReq {
+	string authority_id = 1;
 }
 
-message GetAuthorityResp {
+message GetResp {
 	Authority authority = 1;
 }
 
-service AuthorityService {
+message AddAdminReq {
+	string authority_id = 1;
+	string user_id = 2;
+}
 
+message AddAdminResp {
+	Authority authority = 1;
+}
+
+message DeleteAdminReq {
+	string authority_id = 1;
+	string user_id = 2;
+}
+
+message DeleteAdminResp {
+	Authority authority = 1;
+}
+
+message UpdateTitleReq {
+	string authority_id = 1;
+	string title = 2;
+}
+
+message UpdateTitleResp {
+	Authority authority = 1;
+}
+
+message UpdateAddressReq {
+	string authority_id = 1;
+	Address address = 2;
+}
+
+message UpdateAddressResp {
+	Authority authority = 1;
+}
+
+message UpdatePhoneReq {
+	string authority_id = 1;
+	string phone = 2;
+}
+
+message UpdatePhoneResp {
+	Authority authority = 1;
+}
+
+message UpdateTypeReq {
+	string authority_id = 1;
+	Type type = 2;
+}
+
+message UpdateTypeResp {
+	Authority authority = 1;
+}
+
+message UpdateNonJudicialLimitReq {
+	string authority_id = 1;
+	int64 non_judicial_contibution_limit = 2;
+}
+
+message UpdateNonJudicialLimitResp {
+	Authority authority = 1;
+}	
+
+message UpdateJudicialLimitReq {
+	string authority_id = 1;
+	int64 judicial_contibution_limit = 2;
+}
+
+message UpdateJudicialLimitResp {
+	Authority authority = 1;
+}
+	
+
+service Authority {
 	// GetAllAuthorities returns a list of all Filing Authorities.
-	rpc GetAllAuthorities(ListAllAuthoritiesReq) returns (ListAllAuthoritiesResp) {};
+	rpc GetAll(GetAllReq) returns (GetAllResp) {};
 
 	// AddAuthority creates a new Filing Authority
-	rpc AddAuthority(AddAuthorityReq) returns (AddAuthorityResp) {};
+	rpc Add(AddReq) returns (AddResp) {};
 
 	// DeleteAuthority deletes a filing authority from the database
-	rpc DeleteAuthority(DeleteAuthorityReq) returns (DeleteAuthorityResp) {};
+	rpc Delete(DeleteReq) returns (DeleteResp) {};
 
 	// GetAuthority returns information about a specific Filing Authority
-	rpc GetAuthority(GetAuthorityReq) returns (GetAuthorityResp) {};
+	rpc Get(GetReq) returns (GetResp) {};
 
 	// AddAuthorityAdmin adds a user as an admin to a Filing Authority
-	rpc AddAuthorityAdmin(AddAuthorityAdminReq) returns (AddAuthorityAdminResp) {};
+	rpc AddAdmin(AddAdminReq) returns (AddAdminResp) {};
 
 	// DeleteAuthorityAdmin removes an admin user from a Filing Authority 
-	rpc DeleteAuthorityAdmin(RemoveAuthorityAdminReq) returns (RemoveAuthorityAdminResp) {};
+	rpc DeleteAdmin(DeleteAdminReq) returns (DeleteAdminResp) {};
 
 	// UpdateAuthorityTitle updates the display name of a Filing Authority
-	rpc UpdateAuthorityTitle(UpdateAuthorityTitleReq) returns (UpdateAuthorityTitleResp) {};
+	rpc UpdateTitle(UpdateTitleReq) returns (UpdateTitleResp) {};
 
 	// UpdateAuthorityAddress changes the address of a Filing Authority
-	rpc UpdateAuthorityAddress(UpdateAuthorityAddressReq) returns (UpdateAuthorityAddressResp) {};
+	rpc UpdateAddress(UpdateAddressReq) returns (UpdateAddressResp) {};
 
 	// UpdateAuthorityPhone changes the contact phone number of a Filing Authority
-	rpc UpdateAuthorityPhone(UpdateAuthorityPhoneReq) returns (UpdateAuthorityPhoneResp) {};
+	rpc UpdatePhone(UpdatePhoneReq) returns (UpdatePhoneResp) {};
 
 	// UpdateAuthorityType changes the authority type of a Filing Authority. This call shouldn't
 	// be used very often but useful if a mistake was made when creating the initial Filing Authority
-	rpc UpdateAuthorityType(UpdateAuthorityTypeReq) returns (UpdateAuthorityTypeResp) {};
+	rpc UpdateType(UpdateTypeReq) returns (UpdateTypeResp) {};
+
+	// UpdateNonJudicialLimit sets the non-judicial campaign contribution limit for a Filing Authority
+	rpc UpdateNonJudicialLimit(UpdateNonJudicialLimitReq) returns (UpdateNonJudicialLimitResp) {};
+
+	// UpdateJudicialLimit set the judicial campaign contribution limit for a Filing Authority
+	rpc UpdateJudicialLimit(UpdateJudicialLimitReq) returns (UpdateJudicialLimitResp) {};
 }
 
