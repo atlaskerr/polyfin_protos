@@ -2,16 +2,39 @@ syntax = "proto3";
 
 package electionpb;
 
-service ElectionService {
-	rpc GetAllElections(GetAllElectionsReq) returns (GetAllElectionsResp) {};
-	rpc CreateElection(CreateElectionReq) returns (CreateElectionResp) {};
-	
-}
-
 message Election {
 	string election_id = 1;
 	string authority_id = 2;
 	Timestamp date = 3;	
-	repeated office_id = 4;
-	repeated measure_id = 5;
+	repeated string office_id = 4;
+	repeated string measure_id = 5;
 }
+
+message Measure {
+	string measure_id = 1;
+	string election_id = 2;
+	string title = 3;
+	string description = 4;
+}
+
+service Election {
+	rpc GetAll(GetAllReq) returns (GetAllResp) {};
+	rpc Get(GetReq) returns (GetResp) {};
+	rpc New(NewReq) returns (NewResp) {};
+	rpc Delete(DeleteReq) returns (DeleteResp) {};
+	rpc UpdateDate(UpdateDateReq) returns (UpdateDateResp) {};
+	rpc AddOffice(AddOfficeReq) returns (AddOfficeResp) {};
+	rpc DeleteOffice(DeleteOfficeReq) returns (DeleteOfficeResp) {};
+	rpc DeleteMeasure(DeleteMeasureReq) returns (DeleteMeasureResp) {};
+}
+
+service Measure {
+	rpc GetAll(GetAllMeasuresReq) returns (GetAllMeasuresResp) {};
+	rpc GetByElection(GetByElectionReq) returns (GetByElectionResp) {};
+	rpc Get(GetMeasureReq) returns (GetAllMeasuresResp) {};
+	rpc New(NewMeasureReq) returns (NewMeasureResp) {};
+	rpc Delete(DeleteMeasureReq) returns (DeleteMeasureResp) {};
+	rpc UpdateTitle(UpdateMeasureTitleReq) returns (UpdateMeasureTitleResp) {};
+	rpc UpdateDescription(UpdateMeasureDescriptionReq) returns (UpdateMeasureDescriptionResp) {};
+}
+

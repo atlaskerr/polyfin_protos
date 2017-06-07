@@ -25,7 +25,7 @@ message Authority {
 
 	// admin_id is the user id of the individual(s)
 	// in charge of managing the filing authority
-	repeated admin_id = 8;
+	repeated string admin_id = 8;
 }
 
 message Address {
@@ -44,11 +44,11 @@ message GetAllResp {
 	repeated Authority authority = 1;
 }
 
-message AddReq {
+message NewReq {
 	Authority authority = 1;
 }
 
-message AddResp {
+message NewResp {
 	string authority_id = 1;
 }
 
@@ -122,11 +122,11 @@ message UpdateJudicialLimitReq {
 
 message UpdateJudicialLimitResp {}
 
-message DoesExistReq {
+message ExistReq {
 	string authority_id = 1;
 }
 	
-message DoesExistResp {
+message ExistResp {
 	bool exists = 1;
 }
 
@@ -135,7 +135,7 @@ service Authority {
 	rpc GetAll(GetAllReq) returns (GetAllResp) {};
 
 	// AddAuthority creates a new Filing Authority
-	rpc Add(AddReq) returns (AddResp) {};
+	rpc New(NewReq) returns (NewResp) {};
 
 	// DeleteAuthority deletes a filing authority from the database
 	rpc Delete(DeleteReq) returns (DeleteResp) {};
@@ -168,7 +168,7 @@ service Authority {
 	// UpdateJudicialLimit set the judicial campaign contribution limit for a Filing Authority
 	rpc UpdateJudicialLimit(UpdateJudicialLimitReq) returns (UpdateJudicialLimitResp) {};
 
-	// DoesExist returns a bool to validate that a filing authority exists
-	rpc DoesExist(DoesExistReq) returns (DoesExistResp) {};
+	// Exists returns a bool to validate that a filing authority exists
+	rpc Exists(DoesExistReq) returns (DoesExistResp) {};
 }
 

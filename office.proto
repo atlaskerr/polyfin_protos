@@ -2,17 +2,6 @@ syntax = "proto3";
 
 package officepb:
 
-service OfficeService {
-
-	rpc GetAllOffices(GetAllOfficesReq) returns (GetAllOfficesResp) {};
-
-	rpc AddOffice(AddOfficeReq) returns (AddOfficeResp) {};
-
-	rpc UpdateOfficeName(UpdateOfficeNameReq) returns (UpdateOfficeNameResp) {};
-	rpc UpdateOfficeType(UpdateOfficeTypeReq) returns (UpdateOfficeTypeResp) {};
-	rpc DeleteOffice(DeleteOfficeReq) returns (DeleteOfficeResp) {};
-	rpc AddIncumbent(AddIncumbentReq) returns (AddIncumbentResp) {};
-}
 
 enum OfficeType {
 	NON_JUDICIAL = 0;
@@ -29,17 +18,66 @@ message Office {
 	string incumbent_id = 5;
 }
 
-message GetAllOfficesReq {}
+message GetAllReq {}
 
-message GetAllOfficesResp {
+message GetAllResp {
 	repeated Office office = 1;
 }
 
-message AddOfficeReq {
+message NewReq {
 	Office office = 1;
 }
 
-message AddOfficeResp {
-	Office office = 1;
+message NewResp {
+	string office_id = 1;
 }
-	
+
+message UpdateNameReq {
+	string office_id = 1;
+}
+
+message UpdateNameResp {}
+
+message UpdateTypeReq {
+	string office_id = 1;
+}
+
+message UpdateTypeResp {}
+
+message DeleteReq {
+	string office_id = 1;
+}
+
+message DeleteResp {}
+
+message ExistsReq {
+	string office_id = 1;
+}
+
+message ExistsResp {
+	bool exists = 1;
+}
+
+service Office {
+	// GetAll retrieves all political office positions
+	rpc GetAll(GetAllReq) returns (GetAllResp) {};
+
+	// Add creates a new political office
+	rpc New(NewReq) returns (NewResp) {};
+
+	// UpdateName changes the name of an existing office position
+	rpc UpdateName(UpdateNameReq) returns (UpdateNameResp) {};
+
+	// UpdateType changes the office type of an existing office position
+	rpc UpdateType(UpdateTypeReq) returns (UpdateTypeResp) {};
+
+	// Delete removes an existing office position
+	rpc Delete(DeleteReq) returns (DeleteResp) {};
+
+	// AddIncumbent adds a filer to the office as the current holder of the position
+	rpc AddIncumbent(AddIncumbentReq) returns (AddIncumbentResp) {};
+
+	// Exists returns a bool to verify that an office position exists
+	rpc Exists(ExistsReq) returns (ExistsResp) {};
+}
+
