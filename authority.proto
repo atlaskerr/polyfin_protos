@@ -49,7 +49,7 @@ message AddReq {
 }
 
 message AddResp {
-	Authority authority = 1;
+	string authority_id = 1;
 }
 
 message DeleteReq {
@@ -71,73 +71,64 @@ message AddAdminReq {
 	string user_id = 2;
 }
 
-message AddAdminResp {
-	Authority authority = 1;
-}
+message AddAdminResp {}
 
 message DeleteAdminReq {
 	string authority_id = 1;
 	string user_id = 2;
 }
 
-message DeleteAdminResp {
-	Authority authority = 1;
-}
+message DeleteAdminResp {}
 
 message UpdateTitleReq {
 	string authority_id = 1;
 	string title = 2;
 }
 
-message UpdateTitleResp {
-	Authority authority = 1;
-}
+message UpdateTitleResp {}
 
 message UpdateAddressReq {
 	string authority_id = 1;
 	Address address = 2;
 }
 
-message UpdateAddressResp {
-	Authority authority = 1;
-}
+message UpdateAddressResp {}
 
 message UpdatePhoneReq {
 	string authority_id = 1;
 	string phone = 2;
 }
 
-message UpdatePhoneResp {
-	Authority authority = 1;
-}
+message UpdatePhoneResp {}
 
 message UpdateTypeReq {
 	string authority_id = 1;
 	Type type = 2;
 }
 
-message UpdateTypeResp {
-	Authority authority = 1;
-}
+message UpdateTypeResp {}
 
 message UpdateNonJudicialLimitReq {
 	string authority_id = 1;
 	int64 non_judicial_contibution_limit = 2;
 }
 
-message UpdateNonJudicialLimitResp {
-	Authority authority = 1;
-}	
+message UpdateNonJudicialLimitResp {}	
 
 message UpdateJudicialLimitReq {
 	string authority_id = 1;
 	int64 judicial_contibution_limit = 2;
 }
 
-message UpdateJudicialLimitResp {
-	Authority authority = 1;
+message UpdateJudicialLimitResp {}
+
+message DoesExistReq {
+	string authority_id = 1;
 }
 	
+message DoesExistResp {
+	bool exists = 1;
+}
 
 service Authority {
 	// GetAllAuthorities returns a list of all Filing Authorities.
@@ -176,5 +167,8 @@ service Authority {
 
 	// UpdateJudicialLimit set the judicial campaign contribution limit for a Filing Authority
 	rpc UpdateJudicialLimit(UpdateJudicialLimitReq) returns (UpdateJudicialLimitResp) {};
+
+	// DoesExist returns a bool to validate that a filing authority exists
+	rpc DoesExist(DoesExistReq) returns (DoesExistResp) {};
 }
 
